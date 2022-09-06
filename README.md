@@ -1,4 +1,7 @@
 # serve-dataset-json
+`pipenv install` to install dependencies in a virtual environment.
+
+`pipenv shell` to start a shell within the projects virtual environment.
 
 ### How to run:
 *Dev:* `uvicorn src.main:app --reload`
