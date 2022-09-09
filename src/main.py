@@ -5,7 +5,7 @@ app = FastAPI()
 
 
 @app.get("/jsons")
-async def get_all_jsons():
+def get_all_jsons():
     """
     Retrieve all available DatasetJSON files.
     """
@@ -13,7 +13,7 @@ async def get_all_jsons():
 
 
 @app.get("/jsons/{file_name}/datasets")
-async def get_all_datasets(file_name: str):
+def get_all_datasets(file_name: str):
     """
     Retrieve all available Datasets for a given DatasetJSON.
     """
@@ -21,7 +21,7 @@ async def get_all_datasets(file_name: str):
 
 
 @app.get("/jsons/{file_name}/datasets/{dataset_name}/metadata")
-async def get_dataset_metadata(file_name: str, dataset_name: str):
+def get_dataset_metadata(file_name: str, dataset_name: str):
     """
     Retrieve metadata for the specified dataset.
     """
@@ -29,7 +29,7 @@ async def get_dataset_metadata(file_name: str, dataset_name: str):
 
 
 @app.get("/jsons/{file_name}/datasets/{dataset_name}/observations")
-async def get_dataset_observations(file_name: str, dataset_name: str):
+def get_dataset_observations(file_name: str, dataset_name: str):
     """
     Retrieve observations for the specified dataset.
     TODO: Add parameters for filtering and paginating the data.
