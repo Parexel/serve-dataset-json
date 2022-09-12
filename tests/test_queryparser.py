@@ -27,7 +27,7 @@ class TestVariableVsLiteralConditions(unittest.TestCase):
         self.assertFalse(condition(["Juan", 24]))
 
 
-class TestLiteralConditions(unittest.TestCase):
+class TestLiteralVsLiteralConditions(unittest.TestCase):
     exampleVars = ["NAME", "AGE"]
     exampleObs = ["Juan", 24]
 
