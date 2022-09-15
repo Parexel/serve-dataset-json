@@ -15,11 +15,11 @@ def get_all_jsons():
 
 
 @app.post("/jsons")
-def register_json_path(json_path: str):
+def open_json_path(json_path: str):
     """
     Register JSON file.
     """
-    return JSONManager().register_json(json_path)  # Returns the new file's ID number.
+    return JSONManager().open_json(json_path)  # Returns the new file's ID number.
 
 
 @app.get("/jsons/{json_id}/datasets")

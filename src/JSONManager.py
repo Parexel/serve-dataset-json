@@ -6,9 +6,9 @@ import os
 class JSONManager(metaclass=utils.SingletonMeta):
     def __init__(self):
         self._file_id_counter = 1
-        self._json_files = {}
+        self._open_jsons = {}
 
-    def register_json(self, path):
+    def open_json(self, path):
         if not os.path.exists(path):
             raise errors.FilePathNotFound(path)
 
@@ -16,17 +16,19 @@ class JSONManager(metaclass=utils.SingletonMeta):
 
         file_name = os.path.basename(path)
         new_id = self._get_new_id()
-        self._json_files[new_id] = {"name": file_name, "path": path}
+        # TODO change "json": None to DatasetJSON object.
+        self._open_jsons[new_id] = {"name": file_name, "path": path, "json": None}
         return new_id
 
-    def get_json_path(self, id):
-        if id not in self._json_files.keys():
+    def close_json(self, id):
+        if id not in self._open_jsons.keys():
             raise errors.JSONIDNotFound(id)
 
-        return self._json_files[id]["path"]
+        self._open_jsons[id].close()
+        del self._open_jsons[id]
 
     def available_jsons(self):
-        return self._json_files
+        return {id: {"name": json_data["name"], "path": json_data["path"]} for id, json_data in self._open_jsons}
 
     def _get_new_id(self):
         new_id = self._file_id_counter
