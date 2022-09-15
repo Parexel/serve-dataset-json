@@ -12,6 +12,9 @@ class JSONManager(metaclass=utils.SingletonMeta):
         if not os.path.exists(path):
             raise errors.FilePathNotFound(path)
 
+        if self._path_is_open(path):
+            raise errors.JSONFileAlreadyOpen(path)
+
         # TODO: raise error if the given file is an invalid Dataset JSON.
 
         file_name = os.path.basename(path)
@@ -34,3 +37,6 @@ class JSONManager(metaclass=utils.SingletonMeta):
         new_id = self._file_id_counter
         self._file_id_counter += 1
         return new_id
+
+    def _path_is_open(self, path: str) -> bool:
+        return path in [json_data["path"] for json_data in self.available_jsons().values()]
