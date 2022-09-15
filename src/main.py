@@ -13,6 +13,7 @@ def get_all_jsons():
     """
     return JSONManager().available_jsons()
 
+
 @app.post("/jsons")
 def register_json_path(json_path: str):
     """
@@ -38,10 +39,10 @@ def get_dataset_metadata(json_id: int, dataset_name: str):
 
 
 @app.get("/jsons/{json_id}/datasets/{dataset_name}/observations")
-def get_dataset_observations(json_id:      int, 
-                             dataset_name: str, 
-                             page:         Union[int, None], 
-                             page_size:    Union[int, None], 
+def get_dataset_observations(json_id:      int,
+                             dataset_name: str,
+                             page:         Union[int, None],
+                             page_size:    Union[int, None],
                              query:        Union[str, None]):
     """
     Retrieve observations for the specified dataset.
