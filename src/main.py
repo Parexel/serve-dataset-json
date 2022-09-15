@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional
 from fastapi import FastAPI
 from JSONManager import JSONManager
 
@@ -41,9 +41,9 @@ def get_dataset_metadata(json_id: int, dataset_name: str):
 @app.get("/jsons/{json_id}/datasets/{dataset_name}/observations")
 def get_dataset_observations(json_id:      int,
                              dataset_name: str,
-                             page:         Union[int, None],
-                             page_size:    Union[int, None],
-                             query:        Union[str, None]):
+                             page:         Optional[int],
+                             page_size:    Optional[int],
+                             query:        Optional[str]):
     """
     Retrieve observations for the specified dataset.
     """
