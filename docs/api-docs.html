@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>My Project - ReDoc</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://fastapi.tiangolo.com/img/favicon.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <style data-styled="" data-styled-version="4.4.1"></style>
+</head>
+<body>
+    <div id="redoc-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/redoc/bundles/redoc.standalone.js"> </script>
+    <script>
+        var spec = {"openapi": "3.0.2", "info": {"title": "FastAPI", "version": "0.1.0"}, "paths": {"/jsons": {"get": {"summary": "Get All Jsons", "description": "Retrieve all available DatasetJSON files.", "operationId": "get_all_jsons_jsons_get", "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}}}, "post": {"summary": "Open Json Path", "description": "Open JSON file.", "operationId": "open_json_path_jsons_post", "requestBody": {"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Body_open_json_path_jsons_post"}}}, "required": true}, "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/jsons/{json_id}/datasets": {"get": {"summary": "Get All Datasets", "description": "Retrieve all available Datasets for a given DatasetJSON.", "operationId": "get_all_datasets_jsons__json_id__datasets_get", "parameters": [{"required": true, "schema": {"title": "Json Id", "type": "integer"}, "name": "json_id", "in": "path"}], "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/jsons/{json_id}/datasets/{dataset_name}/metadata": {"get": {"summary": "Get Dataset Metadata", "description": "Retrieve metadata for the specified dataset.", "operationId": "get_dataset_metadata_jsons__json_id__datasets__dataset_name__metadata_get", "parameters": [{"required": true, "schema": {"title": "Json Id", "type": "integer"}, "name": "json_id", "in": "path"}, {"required": true, "schema": {"title": "Dataset Name", "type": "string"}, "name": "dataset_name", "in": "path"}], "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}, "/jsons/{json_id}/datasets/{dataset_name}/observations": {"get": {"summary": "Get Dataset Observations", "description": "Retrieve observations for the specified dataset.", "operationId": "get_dataset_observations_jsons__json_id__datasets__dataset_name__observations_get", "parameters": [{"required": true, "schema": {"title": "Json Id", "type": "integer"}, "name": "json_id", "in": "path"}, {"required": true, "schema": {"title": "Dataset Name", "type": "string"}, "name": "dataset_name", "in": "path"}, {"required": true, "schema": {"title": "Page", "type": "integer"}, "name": "page", "in": "query"}, {"required": true, "schema": {"title": "Page Size", "type": "integer"}, "name": "page_size", "in": "query"}, {"required": true, "schema": {"title": "Query", "type": "string"}, "name": "query", "in": "query"}], "responses": {"200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}, "422": {"description": "Validation Error", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/HTTPValidationError"}}}}}}}}, "components": {"schemas": {"Body_open_json_path_jsons_post": {"title": "Body_open_json_path_jsons_post", "required": ["path"], "type": "object", "properties": {"path": {"title": "Path", "type": "string"}}}, "HTTPValidationError": {"title": "HTTPValidationError", "type": "object", "properties": {"detail": {"title": "Detail", "type": "array", "items": {"$ref": "#/components/schemas/ValidationError"}}}}, "ValidationError": {"title": "ValidationError", "required": ["loc", "msg", "type"], "type": "object", "properties": {"loc": {"title": "Location", "type": "array", "items": {"anyOf": [{"type": "string"}, {"type": "integer"}]}}, "msg": {"title": "Message", "type": "string"}, "type": {"title": "Error Type", "type": "string"}}}}}};
+        Redoc.init(spec, {}, document.getElementById("redoc-container"));
+    </script>
+</body>
+</html>
+
