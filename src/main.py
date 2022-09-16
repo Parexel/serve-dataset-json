@@ -17,7 +17,7 @@ def get_all_jsons():
 @app.post("/jsons")
 def open_json_path(json_path: str):
     """
-    Register JSON file.
+    Open JSON file.
     """
     return JSONManager().open_json(json_path)  # Returns the new file's ID number.
 

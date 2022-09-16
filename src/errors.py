@@ -18,3 +18,9 @@ class JSONFileAlreadyOpen(HTTPException):
     def __init__(self, file_path: str):
         super().__init__(status_code=BAD_REQUEST,
                          detail=f"The given Dataset JSON file at: {file_path} is already open.")
+
+
+class DatasetNotInJSON(HTTPException):
+    def __init__(self, json_id: int, dataset_name: str):
+        super().__init__(status_code=NOT_FOUND,
+                         detail=f"Dataset: {dataset_name} was not found in DatasetJSON: {json_id}")
