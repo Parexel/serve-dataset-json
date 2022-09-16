@@ -1,6 +1,6 @@
 from typing import Optional
-from fastapi import FastAPI
-from JSONManager import JSONManager
+from fastapi import FastAPI, Body
+from src.JSONManager import JSONManager
 
 
 app = FastAPI()
@@ -15,11 +15,11 @@ def get_all_jsons():
 
 
 @app.post("/jsons")
-def open_json_path(json_path: str):
+def open_json_path(path: str = Body(embed=True)):
     """
     Open JSON file.
     """
-    return JSONManager().open_json(json_path)  # Returns the new file's ID number.
+    return JSONManager().open_json(path)  # Returns the new file's ID number.
 
 
 @app.get("/jsons/{json_id}/datasets")
