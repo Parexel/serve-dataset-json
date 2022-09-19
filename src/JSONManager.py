@@ -44,7 +44,7 @@ class JSONManager(metaclass=utils.SingletonMeta):
         return self._open_datasets[json_id][name]
 
     def available_jsons(self) -> dict:
-        return {id: {"name": json_data["name"], "path": json_data["path"]} for id, json_data in self._open_jsons}
+        return {id: {"name": json_data["name"], "path": json_data["path"]} for id, json_data in self._open_jsons.items()}
 
     def dataset_metadata(self, json_id: int, name: str) -> utils.DatasetMeta:
         dataset = self.get_dataset(json_id, name)
