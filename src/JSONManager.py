@@ -1,6 +1,7 @@
 import src.utils as utils
 import src.errors as errors
 import os
+import streamdatasetjson as dj
 
 
 class JSONManager(metaclass=utils.SingletonMeta):
@@ -17,16 +18,12 @@ class JSONManager(metaclass=utils.SingletonMeta):
             raise errors.JSONFileAlreadyOpen(path)
 
         # TODO: raise error if the given file is an invalid Dataset JSON.
+        json = dj.DatasetJSON(path)
 
         file_name = os.path.basename(path)
         new_id = self._get_new_id()
-        # TODO change "json": None to the instanced DatasetJSON object.
-        self._open_jsons[new_id] = {"name": file_name, "path": path, "json": None}
+        self._open_jsons[new_id] = {"name": file_name, "path": path, "json": json}
         return new_id
-
-    def get_dataset(self, json_id: int, name: str):
-        self._lazy_load_dataset(json_id, name)
-        return self._open_datasets[json_id][name]
 
     def close_json(self, json_id: int):
         if not self._json_is_open(json_id):
@@ -36,8 +33,27 @@ class JSONManager(metaclass=utils.SingletonMeta):
         del self._open_jsons[json_id]
         del self._open_datasets[json_id]
 
+    def get_json(self, json_id: int) -> dj.DatasetJSON:
+        if not self._json_is_open(json_id):
+            raise errors.JSONIDNotFound
+
+        return self._open_jsons[json_id]["json"]
+
+    def get_dataset(self, json_id: int, name: str) -> dj.Dataset:
+        self._lazy_load_dataset(json_id, name)
+        return self._open_datasets[json_id][name]
+
     def available_jsons(self) -> dict:
         return {id: {"name": json_data["name"], "path": json_data["path"]} for id, json_data in self._open_jsons}
+
+    def dataset_metadata(self, json_id: int, name: str) -> utils.DatasetMeta:
+        dataset = self.get_dataset(json_id, name)
+        return utils.DatasetMeta(
+            dataset.name,
+            dataset.label,
+            dataset.records,
+            dataset.items
+        )
 
     def _get_new_id(self) -> int:
         new_id = self._file_id_counter
@@ -53,16 +69,18 @@ class JSONManager(metaclass=utils.SingletonMeta):
     def _dataset_is_open(self, json_id: int, dataset_name: str) -> bool:
         return dataset_name in self._open_datasets[json_id].keys()
 
-    # This method is not exposed because it shouldn't be used outside this class.
-    # get_dataset is the method that should be used.
     def _lazy_load_dataset(self, json_id: int, name: str):
+        """
+        This method is not exposed because it shouldn't be used outside this class.
+        get_dataset is the method that should be used.
+        """
         if not self._json_is_open(json_id):
             raise errors.JSONIDNotFound(json_id)
 
         # Caché dataset
         if not self._dataset_is_open(json_id, name):
             try:
-                dataset = None  # TODO json.get_dataset(name)
+                dataset = self._open_jsons[json_id].get_dataset(name)
                 self._open_datasets[json_id][name] = dataset
-            except Exception:  # TODO catch the specific exception
+            except dj.DatasetNotFoundError:
                 raise errors.DatasetNotInJSON(json_id, name)
