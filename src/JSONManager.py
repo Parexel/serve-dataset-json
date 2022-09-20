@@ -44,16 +44,17 @@ class JSONManager(metaclass=utils.SingletonMeta):
         return self._open_datasets[json_id][name]
 
     def available_jsons(self) -> dict:
-        return {id: {"name": json_data["name"], "path": json_data["path"]} for id, json_data in self._open_jsons.items()}
+        return {id: {"name": json_data["name"], "path": json_data["path"]}
+                for id, json_data in self._open_jsons.items()}
 
-    def dataset_metadata(self, json_id: int, name: str) -> utils.DatasetMeta:
+    def dataset_metadata(self, json_id: int, name: str) -> dict:
         dataset = self.get_dataset(json_id, name)
-        return utils.DatasetMeta(
-            dataset.name,
-            dataset.label,
-            dataset.records,
-            dataset.items
-        )
+        return dict({
+            "name":    dataset.name,
+            "label":   dataset.label,
+            "records": dataset.records,
+            "items":   dataset.items
+        })
 
     def _get_new_id(self) -> int:
         new_id = self._file_id_counter
@@ -67,7 +68,7 @@ class JSONManager(metaclass=utils.SingletonMeta):
         return json_id in self._open_jsons.keys()
 
     def _dataset_is_open(self, json_id: int, dataset_name: str) -> bool:
-        return dataset_name in self._open_datasets[json_id].keys()
+        return dataset_name in self._open_datasets.get(json_id, {}).keys()
 
     def _lazy_load_dataset(self, json_id: int, name: str):
         """
@@ -80,7 +81,8 @@ class JSONManager(metaclass=utils.SingletonMeta):
         # Caché dataset
         if not self._dataset_is_open(json_id, name):
             try:
-                dataset = self._open_jsons[json_id].get_dataset(name)
+                dataset = self._open_jsons[json_id]["json"].get_dataset(name)
+                self._open_datasets[json_id] = self._open_datasets.get(json_id, {})
                 self._open_datasets[json_id][name] = dataset
             except dj.DatasetNotFoundError:
                 raise errors.DatasetNotInJSON(json_id, name)
