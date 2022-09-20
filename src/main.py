@@ -23,6 +23,14 @@ def open_json_path(path: str = Body(embed=True)):
     return JSONManager().open(path)  # Returns the new file's ID number.
 
 
+@app.delete("/jsons/{json_id}")
+def close_json(json_id: int):
+    """
+    Close JSON file.
+    """
+    JSONManager().close(json_id)
+
+
 @app.get("/jsons/{json_id}/datasets")
 def get_all_datasets(json_id: int):
     """

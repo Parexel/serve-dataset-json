@@ -32,19 +32,16 @@ class JSONManager(metaclass=utils.SingletonMeta):
         """
         Close DatasetJSON file.
         """
-        if not self._json_is_open(json_id):
-            raise errors.JSONIDNotFound(json_id)
-
-        self._open_jsons[json_id].close()
+        self.get(json_id).close()
         del self._open_jsons[json_id]
-        del self._open_datasets[json_id]
+        self._open_datasets.pop(json_id, None)  # Removes key if present
 
     def get(self, json_id: int) -> dj.DatasetJSON:
         """
         Get open DatasetJSON instance by ID.
         """
         if not self._json_is_open(json_id):
-            raise errors.JSONIDNotFound
+            raise errors.JSONIDNotFound(json_id)
 
         return self._open_jsons[json_id]["json"]
 
