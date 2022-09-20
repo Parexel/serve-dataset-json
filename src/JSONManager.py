@@ -10,7 +10,10 @@ class JSONManager(metaclass=utils.SingletonMeta):
         self._open_jsons = {}
         self._open_datasets = {}
 
-    def open_json(self, path: str) -> int:
+    def open(self, path: str) -> int:
+        """
+        Open DatasetJSON file.
+        """
         if not os.path.exists(path):
             raise errors.FilePathNotFound(path)
 
@@ -25,7 +28,10 @@ class JSONManager(metaclass=utils.SingletonMeta):
         self._open_jsons[new_id] = {"name": file_name, "path": path, "json": json}
         return new_id
 
-    def close_json(self, json_id: int):
+    def close(self, json_id: int):
+        """
+        Close DatasetJSON file.
+        """
         if not self._json_is_open(json_id):
             raise errors.JSONIDNotFound(json_id)
 
@@ -33,7 +39,10 @@ class JSONManager(metaclass=utils.SingletonMeta):
         del self._open_jsons[json_id]
         del self._open_datasets[json_id]
 
-    def get_json(self, json_id: int) -> dj.DatasetJSON:
+    def get(self, json_id: int) -> dj.DatasetJSON:
+        """
+        Get open DatasetJSON instance by ID.
+        """
         if not self._json_is_open(json_id):
             raise errors.JSONIDNotFound
 
@@ -75,14 +84,12 @@ class JSONManager(metaclass=utils.SingletonMeta):
         This method is not exposed because it shouldn't be used outside this class.
         get_dataset is the method that should be used.
         """
-        if not self._json_is_open(json_id):
-            raise errors.JSONIDNotFound(json_id)
-
         # Caché dataset
         if not self._dataset_is_open(json_id, name):
             try:
-                dataset = self._open_jsons[json_id]["json"].get_dataset(name)
-                self._open_datasets[json_id] = self._open_datasets.get(json_id, {})
-                self._open_datasets[json_id][name] = dataset
+                dataset = self.get(json_id).get_dataset(name)
             except dj.DatasetNotFoundError:
                 raise errors.DatasetNotInJSON(json_id, name)
+
+            self._open_datasets[json_id] = self._open_datasets.get(json_id, {})
+            self._open_datasets[json_id][name] = dataset

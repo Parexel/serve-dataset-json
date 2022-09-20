@@ -20,7 +20,7 @@ def open_json_path(path: str = Body(embed=True)):
     """
     Open JSON file.
     """
-    return JSONManager().open_json(path)  # Returns the new file's ID number.
+    return JSONManager().open(path)  # Returns the new file's ID number.
 
 
 @app.get("/jsons/{json_id}/datasets")
@@ -28,7 +28,7 @@ def get_all_datasets(json_id: int):
     """
     Retrieve all available Datasets for a given DatasetJSON.
     """
-    return JSONManager().get_json(json_id).available_datasets
+    return JSONManager().get(json_id).available_datasets
 
 
 @app.get("/jsons/{json_id}/datasets/{dataset_name}/metadata")
