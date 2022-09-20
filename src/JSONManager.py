@@ -77,10 +77,6 @@ class JSONManager(metaclass=utils.SingletonMeta):
         return dataset_name in self._open_datasets.get(json_id, {}).keys()
 
     def _lazy_load_dataset(self, json_id: int, name: str):
-        """
-        This method is not exposed because it shouldn't be used outside this class.
-        get_dataset is the method that should be used.
-        """
         # Caché dataset
         if not self._dataset_is_open(json_id, name):
             try:
