@@ -67,7 +67,7 @@ def get_dataset_observations(json_id:      int,
         in_page = math.ceil(i / page_size) == page
         if in_page and condition(obs):
             result.append(obs)
-        elif prev_in_page:
+        elif not in_page and prev_in_page:
             break  # Break early
 
     return result
