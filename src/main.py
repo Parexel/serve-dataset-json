@@ -59,15 +59,20 @@ def get_dataset_observations(json_id:      int,
     def condition(_): return True  # TODO replace with query parser
     observations = JSONManager().get_dataset(json_id, dataset_name).observations
 
+    # Filter and pagination on the same loop for performance
     result = []
-    prev_in_page = False
-    in_page = False
-    for i, obs in enumerate(observations):
-        prev_in_page = in_page
-        in_page = math.ceil(i / page_size) == page
-        if in_page and condition(obs):
-            result.append(obs)
-        elif not in_page and prev_in_page:
+    in_page, prev_in_page = False, False
+    page_index = 0
+    for obs in observations:
+        in_page = math.ceil(page_index / page_size) == page
+
+        if not in_page and prev_in_page:
             break  # Break early
+
+        if condition(obs):
+            prev_in_page = in_page
+            page_index += 1
+            if in_page:
+                result.append(obs)
 
     return result
