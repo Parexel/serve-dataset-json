@@ -17,7 +17,7 @@ class TestVariableVsLiteralConditions(unittest.TestCase):
         self.assertFalse(condition(["Juan", 24]))
 
     def test_equals_for_string_true(self):
-        query = "name == \"Juan\""
+        query = 'name == "Juan"'
         condition = queryparser.parse(query, self.exampleVars)
         self.assertTrue(condition(["Juan", 24]))
 
@@ -42,12 +42,12 @@ class TestLiteralVsLiteralConditions(unittest.TestCase):
         self.assertFalse(condition(self.exampleObs))
 
     def test_literal_string_equals_true(self):
-        query = "\"hola\" == \"hola\""
+        query = '"hola" == "hola"'
         condition = queryparser.parse(query, self.exampleVars)
         self.assertTrue(condition(self.exampleObs))
 
     def test_literal_string_equals_false(self):
-        query = "\"hola\" == \"chau\""
+        query = '"hola" == "chau"'
         condition = queryparser.parse(query, self.exampleVars)
         self.assertFalse(condition(self.exampleObs))
 
@@ -62,12 +62,12 @@ class TestLiteralVsLiteralConditions(unittest.TestCase):
         self.assertFalse(condition(self.exampleObs))
 
     def test_literal_string_not_equal_true(self):
-        query = "\"hola\" != \"chau\""
+        query = '"hola" != "chau"'
         condition = queryparser.parse(query, self.exampleVars)
         self.assertTrue(condition(self.exampleObs))
 
     def test_literal_string_not_equal_false(self):
-        query = "\"hola\" != \"hola\""
+        query = '"hola" != "hola"'
         condition = queryparser.parse(query, self.exampleVars)
         self.assertFalse(condition(self.exampleObs))
 
@@ -90,7 +90,7 @@ class TestLiteralVsLiteralConditions(unittest.TestCase):
         query = "0 >= 1"
         condition = queryparser.parse(query, self.exampleVars)
         self.assertFalse(condition(self.exampleObs))
-    
+
     def test_literal_number_less_than_true(self):
         query = "1 < 2"
         condition = queryparser.parse(query, self.exampleVars)
