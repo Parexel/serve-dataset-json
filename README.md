@@ -9,4 +9,5 @@
 *Prod:* `uvicorn src.main:app`
 
 ### Endpoints:
-Access _localhost:8000/docs_ to test and see documentation for all endpoints.
+Access _localhost:8000/redoc_ to see documentation for all endpoints,
+and _localhost:8000/docs_ to test them.
