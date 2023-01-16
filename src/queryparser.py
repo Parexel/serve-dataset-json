@@ -1,16 +1,22 @@
+import re
 
-def parse(filter: str, varList: list):
 
-    len_varList = len(varList)
-    n = len_varList
-    adaptetd_var_list = []
-    for i in varList:
-        adaptetd_var_list.append(i.lower())
+def parse(query: str, var_list: list):
 
-    def resultParse(row: list):
+    query = re.sub(
+        r'=(?=(?:[^\"\']*[\"\'][^\"\']*[\"\'])*[^\"\']*$)', '==', query)
+
+    len_var_list = len(var_list)
+    n = len_var_list
+    adapted_var_list = []
+
+    for i in var_list:
+        adapted_var_list.append(i.lower())
+
+    def result_parse(row: list):
 
         for i in range(n):
-            exec(adaptetd_var_list[i] + " = row[i]")
-        return bool(eval(filter))
+            exec(adapted_var_list[i] + " = row[i]")
+        return bool(eval(query))
 
-    return resultParse
+    return result_parse
