@@ -1,4 +1,8 @@
 import math
+
+from streamdatasetjson.dataset import Row
+import src.queryparser as queryparser
+
 from typing import Optional
 from fastapi import FastAPI, Body
 from src.JSONManager import JSONManager
@@ -50,14 +54,20 @@ def get_dataset_metadata(json_id: int, dataset_name: str):
 @app.get("/jsons/{json_id}/datasets/{dataset_name}/observations")
 def get_dataset_observations(json_id:      int,
                              dataset_name: str,
-                             page:         Optional[int],
-                             page_size:    Optional[int],
-                             query:        Optional[str]):  # TODO add sorting parameter
+                             page:         int = 1,
+                             page_size:    int = 1000,
+                             query:        Optional[str] = None):  # TODO add sorting parameter
     """
     Retrieve observations for the specified dataset.
     """
-    def condition(_): return True  # TODO replace with query parser
-    observations = JSONManager().get_dataset(json_id, dataset_name).observations
+    dataset = JSONManager().get_dataset(json_id, dataset_name)
+
+    def condition(row: Row):
+        if query is None:
+            return True
+        return queryparser.parse(query, dataset.variables)(row)
+
+    observations = dataset.observations
 
     # Filter and pagination on the same loop for performance
     result = []
