@@ -73,7 +73,7 @@ def get_dataset_observations(json_id:      int,
     in_page, prev_in_page = False, False
     page_index = 0
     for obs in observations:
-        in_page = math.ceil(page_index / page_size) == page
+        in_page = math.floor(page_index / page_size) == page
 
         if not in_page and prev_in_page:
             break  # Break early
