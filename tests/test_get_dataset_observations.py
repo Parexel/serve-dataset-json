@@ -38,4 +38,4 @@ class TestQueryParameter(unittest.TestCase):
         main.get_dataset_observations(self.example_json_id, "ADAE", page=10)
 
     def test_does_not_fail_if_0_page_number_is_given(self):
-        main.get_dataset_observations(self.example_json_id, "ADAE", page=10)
+        main.get_dataset_observations(self.example_json_id, "ADAE", page=0)
