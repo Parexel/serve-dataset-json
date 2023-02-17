@@ -59,7 +59,7 @@ class JSONManager(metaclass=utils.SingletonMeta):
             "name":    dataset.name,
             "label":   dataset.label,
             "records": dataset.records,
-            "items":   dataset.items
+            "items":   [item._asdict() for item in dataset.items]
         })
 
     def _get_new_id(self) -> int:

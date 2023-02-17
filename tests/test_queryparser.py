@@ -7,22 +7,22 @@ class TestVariableVsLiteralConditions(unittest.TestCase):
     exampleVars = ["NAME", "AGE"]
 
     def test_equals_for_number_true(self):
-        query = "age == 24"
+        query = "AGE == 24"
         condition = queryparser.parse(query, self.exampleVars)
         self.assertTrue(condition(["Juan", 24]))
 
     def test_equals_for_number_false(self):
-        query = "age == 10"
+        query = "AGE == 10"
         condition = queryparser.parse(query, self.exampleVars)
         self.assertFalse(condition(["Juan", 24]))
 
     def test_equals_for_string_true(self):
-        query = 'name == "Juan"'
+        query = 'NAME == "Juan"'
         condition = queryparser.parse(query, self.exampleVars)
         self.assertTrue(condition(["Juan", 24]))
 
     def test_equals_for_string_false(self):
-        query = "name == \"Ivan\""
+        query = "NAME == \"Ivan\""
         condition = queryparser.parse(query, self.exampleVars)
         self.assertFalse(condition(["Juan", 24]))
 
