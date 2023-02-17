@@ -24,3 +24,9 @@ class DatasetNotInJSON(HTTPException):
     def __init__(self, json_id: int, dataset_name: str):
         super().__init__(status_code=NOT_FOUND,
                          detail=f"Dataset: {dataset_name} was not found in DatasetJSON: {json_id}")
+
+
+class InvalidParameterValue(HTTPException):
+    def __init__(self, param_name, actual_value, posible_values_spec):
+        super().__init__(status_code=BAD_REQUEST,
+                         detail=f"Invalid parameter value: {actual_value} for parameter {param_name}. Use one of the following: {posible_values_spec}")

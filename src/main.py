@@ -1,4 +1,5 @@
 import math
+from src import errors
 import src.queryparser as queryparser
 
 from streamdatasetjson.dataset import Row
@@ -53,12 +54,19 @@ def get_dataset_metadata(json_id: int, dataset_name: str):
 @app.get("/jsons/{json_id}/datasets/{dataset_name}/observations")
 def get_dataset_observations(json_id:      int,
                              dataset_name: str,
-                             page:         int = 1,
-                             page_size:    int = 1000,
+                             page:         int = 0,
+                             page_size:    int = 100,
                              query:        Optional[str] = None):  # TODO add sorting parameter
     """
     Retrieve observations for the specified dataset.
     """
+    if page < 0:
+        raise errors.InvalidParameterValue(param_name="PAGE", actual_value=page, posible_values_spec="page >= 0")
+
+    if page_size <= 0:
+        raise errors.InvalidParameterValue(
+            param_name="PAGE_SIZE", actual_value=page_size, posible_values_spec="page > 0")
+
     dataset = JSONManager().get_dataset(json_id, dataset_name)
 
     def condition(row: Row):

@@ -1,4 +1,5 @@
 import unittest
+from src import errors
 from src.JSONManager import JSONManager
 
 import src.main as main
@@ -28,3 +29,13 @@ class TestQueryParameter(unittest.TestCase):
         first_page = main.get_dataset_observations(self.example_json_id, "ADAE", page=2, page_size=5)
         total_observations = JSONManager().get_dataset(self.example_json_id, "ADAE").observations
         self.assertListEqual(first_page, list(total_observations)[10:15])
+
+    def test_fails_if_a_negative_page_number_is_given(self):
+        self.assertRaises(errors.InvalidParameterValue, lambda: main.get_dataset_observations(
+            self.example_json_id, "ADAE", page=-23))
+
+    def test_does_not_fail_if_a_positive_page_number_is_given(self):
+        main.get_dataset_observations(self.example_json_id, "ADAE", page=10)
+
+    def test_does_not_fail_if_0_page_number_is_given(self):
+        main.get_dataset_observations(self.example_json_id, "ADAE", page=10)
