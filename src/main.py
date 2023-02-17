@@ -1,8 +1,7 @@
 import math
-
-from streamdatasetjson.dataset import Row
 import src.queryparser as queryparser
 
+from streamdatasetjson.dataset import Row
 from typing import Optional
 from fastapi import FastAPI, Body
 from src.JSONManager import JSONManager
